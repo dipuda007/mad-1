@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Company Dashboard - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-speedometer2 me-2"></i>Company Dashboard</h1>
+        <p class="text-muted">Welcome back, {{ company.name }}</p>
+    </div>
+
+    <!-- Company Info Card -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <h3>{{ company.name }}</h3>
+                    <p class="mb-0">
+                        {% if company.approval_status == 'approved' %}
+                        <span class="badge badge-approved">Approved</span>
+                        {% elif company.approval_status == 'pending' %}
+                        <span class="badge badge-pending">Pending Approval</span>
+                        {% else %}
+                        <span class="badge badge-rejected">Rejected</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>HR Contact:</strong> {{ company.hr_name or '-' }}</p>
+                            <p><strong>HR Email:</strong> {{ company.hr_email or '-' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>HR Phone:</strong> {{ company.hr_phone or '-' }}</p>
+                            <p><strong>Website:</strong>
+                                {% if company.website %}
+                                <a href="{{ company.website }}" target="_blank">{{ company.website }}</a>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('company_profile') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-pencil me-2"></i>Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- Stats -->
+            <div class="card mb-3 stat-card">
+                <div class="stat-number">{{ drives|length }}</div>
+                <div class="stat-label">Placement Drives</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-number">{{ total_applications }}</div>
+                <div class="stat-label">Total Applications</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Drives -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-megaphone me-2"></i>My Placement Drives</span>
+            {% if company.approval_status == 'approved' %}
+            <a href="{{ url_for('create_drive') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg me-1"></i>Create Drive
+            </a>
+            {% endif %}
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Package</th>
+                            <th>Status</th>
+                            <th>Applications</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drive in drives %}
+                        <tr>
+                            <td><strong>{{ drive.job_title }}</strong></td>
+                            <td>
+                                {% if drive.package_lpa %}
+                                <span class="text-success fw-bold">₹{{ drive.package_lpa }} LPA</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if drive.status == 'pending' %}
+                                <span class="badge badge-pending">Pending</span>
+                                {% elif drive.status == 'approved' %}
+                                <span class="badge badge-approved">Approved</span>
+                                {% elif drive.status == 'rejected' %}
+                                <span class="badge badge-rejected">Rejected</span>
+                                {% else %}
+                                <span class="badge badge-closed">Closed</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ drive.applications.count() }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('drive_applications', id=drive.id) }}"
+                                    class="btn btn-sm btn-outline-primary">View Applications</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                {% if company.approval_status != 'approved' %}
+                                Your company must be approved before creating drives
+                                {% else %}
+                                No placement drives created yet
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

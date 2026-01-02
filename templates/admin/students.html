@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Students - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-people me-2"></i>Manage Students</h1>
+        <p class="text-muted mb-0">View and manage student profiles</p>
+    </div>
+
+    <!-- Search -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('admin_students') }}" class="d-flex gap-2">
+                <input type="text" class="form-control search-box" name="search" value="{{ search }}"
+                    placeholder="Search by name, roll number, or phone...">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+                {% if search %}
+                <a href="{{ url_for('admin_students') }}" class="btn btn-outline-secondary">Clear</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Roll Number</th>
+                            <th>Branch</th>
+                            <th>CGPA</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ student.id }}</td>
+                            <td>
+                                <strong>{{ student.name }}</strong>
+                                {% if student.is_blacklisted %}
+                                <span class="badge badge-blacklisted ms-2">Blacklisted</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ student.roll_number }}</td>
+                            <td>{{ student.branch or '-' }}</td>
+                            <td>{{ student.cgpa }}</td>
+                            <td>{{ student.phone or '-' }}</td>
+                            <td>
+                                {% if student.is_blacklisted %}
+                                <span class="badge badge-blacklisted">Blacklisted</span>
+                                {% else %}
+                                <span class="badge badge-approved">Active</span>
+                                {% endif %}
+                            </td>
+                            <td class="action-buttons">
+                                <a href="{{ url_for('edit_student', id=student.id) }}" class="btn btn-primary btn-sm"
+                                    title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="POST" action="{{ url_for('blacklist_student', id=student.id) }}"
+                                    class="d-inline">
+                                    <button type="submit"
+                                        class="btn btn-{{ 'warning' if student.is_blacklisted else 'dark' }} btn-sm"
+                                        title="{{ 'Unblacklist' if student.is_blacklisted else 'Blacklist' }}">
+                                        <i class="bi bi-{{ 'unlock' if student.is_blacklisted else 'lock' }}"></i>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ url_for('delete_student', id=student.id) }}"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Are you sure you want to delete this student?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                {% if search %}
+                                No students found matching "{{ search }}"
+                                {% else %}
+                                No students registered yet
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

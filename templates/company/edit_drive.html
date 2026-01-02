@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Placement Drive - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-pencil me-2"></i>Edit Placement Drive</h1>
+        <p class="text-muted mb-0">Update drive information</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('edit_drive', id=drive.id) }}">
+                        <div class="mb-3">
+                            <label for="job_title" class="form-label">Job Title *</label>
+                            <input type="text" class="form-control" id="job_title" name="job_title"
+                                value="{{ drive.job_title }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="job_description" class="form-label">Job Description</label>
+                            <textarea class="form-control" id="job_description" name="job_description"
+                                rows="4">{{ drive.job_description or '' }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="eligibility_criteria" class="form-label">Eligibility Criteria</label>
+                            <textarea class="form-control" id="eligibility_criteria" name="eligibility_criteria"
+                                rows="3">{{ drive.eligibility_criteria or '' }}</textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="min_cgpa" class="form-label">Minimum CGPA</label>
+                                <input type="number" class="form-control" id="min_cgpa" name="min_cgpa" step="0.1"
+                                    min="0" max="10" value="{{ drive.min_cgpa }}">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="package_lpa" class="form-label">Package (LPA)</label>
+                                <input type="number" class="form-control" id="package_lpa" name="package_lpa" step="0.1"
+                                    min="0" value="{{ drive.package_lpa or '' }}">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="application_deadline" class="form-label">Application Deadline</label>
+                                <input type="date" class="form-control" id="application_deadline"
+                                    name="application_deadline"
+                                    value="{{ drive.application_deadline.strftime('%Y-%m-%d') if drive.application_deadline else '' }}">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="branches_allowed" class="form-label">Eligible Branches</label>
+                            <input type="text" class="form-control" id="branches_allowed" name="branches_allowed"
+                                value="{{ drive.branches_allowed or '' }}">
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-2"></i>Save Changes
+                            </button>
+                            <a href="{{ url_for('company_drives') }}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-info-circle me-2"></i>Drive Status
+                </div>
+                <div class="card-body">
+                    <p><strong>Current Status:</strong></p>
+                    {% if drive.status == 'pending' %}
+                    <span class="badge badge-pending fs-6">Pending Approval</span>
+                    {% elif drive.status == 'approved' %}
+                    <span class="badge badge-approved fs-6">Approved</span>
+                    {% elif drive.status == 'rejected' %}
+                    <span class="badge badge-rejected fs-6">Rejected</span>
+                    {% else %}
+                    <span class="badge badge-closed fs-6">Closed</span>
+                    {% endif %}
+
+                    <p class="mt-3 mb-0"><strong>Applications:</strong> {{ drive.applications.count() }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,185 @@
+# Placement Portal Application - Walkthrough
+
+## Overview
+
+A fully functional **Placement Portal Application** built with Flask, Jinja2, HTML, CSS, Bootstrap 5, and SQLite. The application manages campus recruitment activities with three user roles: Admin, Company, and Student.
+
+---
+
+## Project Structure
+
+```
+c:\projects\mad1\
+├── app.py                    # Main Flask application (500+ lines)
+├── config.py                 # Configuration settings
+├── models.py                 # SQLAlchemy models (5 tables)
+├── requirements.txt          # Python dependencies
+├── init_db.py               # Database initialization
+├── instance/
+│   └── placement_portal.db   # SQLite database (auto-created)
+├── static/
+│   └── css/
+│       └── style.css         # Custom styles (280+ lines)
+└── templates/
+    ├── base.html             # Base template with navbar
+    ├── index.html            # Landing page
+    ├── auth/
+    │   ├── login.html
+    │   ├── register_student.html
+    │   └── register_company.html
+    ├── admin/
+    │   ├── dashboard.html
+    │   ├── companies.html
+    │   ├── students.html
+    │   ├── edit_student.html
+    │   ├── drives.html
+    │   └── applications.html
+    ├── company/
+    │   ├── dashboard.html
+    │   ├── profile.html
+    │   ├── drives.html
+    │   ├── create_drive.html
+    │   ├── edit_drive.html
+    │   └── applications.html
+    ├── student/
+    │   ├── dashboard.html
+    │   ├── profile.html
+    │   ├── drives.html
+    │   └── history.html
+    └── errors/
+        ├── 403.html
+        └── 404.html
+```
+
+---
+
+## Key Features Implemented
+
+### Authentication System
+- ✅ Unified login for all roles (Admin, Company, Student)
+- ✅ Company registration with pending approval status
+- ✅ Student self-registration
+- ✅ Pre-existing admin user (admin@portal.com / admin123)
+- ✅ Flask-Login session management
+- ✅ Role-based access control with custom decorators
+
+### Admin Functionalities
+- ✅ Dashboard with statistics (students, companies, drives, applications)
+- ✅ Approve/Reject company registrations
+- ✅ Approve/Reject placement drives
+- ✅ Search students by name, roll number, or phone
+- ✅ Search companies by name
+- ✅ Edit student profiles
+- ✅ Blacklist/Unblacklist students and companies
+- ✅ Delete students and companies
+
+### Company Functionalities
+- ✅ Company registration with approval workflow
+- ✅ Cannot login until approved by admin
+- ✅ Company dashboard with stats
+- ✅ Create placement drives (pending approval)
+- ✅ Edit/Close/Delete placement drives
+- ✅ View applications per drive
+- ✅ Update application status (Shortlisted/Selected/Rejected)
+
+### Student Functionalities
+- ✅ Student registration and login
+- ✅ Profile management with CGPA, branch, resume URL
+- ✅ View only approved placement drives
+- ✅ Apply to placement drives
+- ✅ CGPA eligibility check before applying
+- ✅ Prevent duplicate applications
+- ✅ Application history with status tracking
+
+### Core Business Logic
+- ✅ Only approved companies can create drives
+- ✅ Only approved drives visible to students
+- ✅ Duplicate application prevention (unique constraint)
+- ✅ CGPA-based eligibility validation
+- ✅ Blacklist enforcement for companies and students
+
+---
+
+## Database Schema
+
+| Table | Description |
+|-------|-------------|
+| **users** | Base authentication (id, email, password_hash, role, is_active) |
+| **students** | Student profiles (user_id, name, roll_number, branch, cgpa, etc.) |
+| **companies** | Company profiles (user_id, name, hr_contact, approval_status, etc.) |
+| **placement_drives** | Job postings (company_id, job_title, min_cgpa, package, deadline, status) |
+| **applications** | Student applications (student_id, drive_id, status, applied_at) |
+
+---
+
+## Test Results
+
+All core features have been tested and verified:
+
+| Test Case | Status |
+|-----------|--------|
+| Admin login | ✅ Pass |
+| Student registration | ✅ Pass |
+| Company registration | ✅ Pass |
+| Admin approves company | ✅ Pass |
+| Company creates drive | ✅ Pass |
+| Admin approves drive | ✅ Pass |
+| Student applies to drive | ✅ Pass |
+| Duplicate application prevention | ✅ Pass |
+| CGPA eligibility check | ✅ Pass |
+| Role-based access control | ✅ Pass |
+
+### Demo Recording
+
+The complete flow was recorded during testing:
+
+![Full Portal Flow Demo](full_flow_demo.webp)
+
+---
+
+## How to Run
+
+1. **Install dependencies:**
+   ```bash
+   cd c:\projects\mad1
+   pip install -r requirements.txt
+   ```
+
+2. **Run the application:**
+   ```bash
+   python app.py
+   ```
+
+3. **Access the portal:**
+   - Open http://127.0.0.1:5000 in your browser
+
+4. **Login credentials:**
+   - **Admin:** admin@portal.com / admin123
+
+---
+
+## Technologies Used
+
+| Component | Technology |
+|-----------|------------|
+| Backend | Flask 2.x |
+| Frontend | Jinja2 + HTML + Bootstrap 5 |
+| Database | SQLite + SQLAlchemy |
+| Authentication | Flask-Login |
+| CSS | Custom + Bootstrap 5 |
+| Icons | Bootstrap Icons |
+
+---
+
+## Compliance with Requirements
+
+| Requirement | Status |
+|-------------|--------|
+| Flask backend | ✅ |
+| Jinja2 templating | ✅ |
+| HTML, CSS, Bootstrap | ✅ |
+| SQLite database | ✅ |
+| No JavaScript for core features | ✅ |
+| Database created programmatically | ✅ |
+| Admin pre-exists in database | ✅ |
+| All demos on local machine | ✅ |

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome - Placement Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero">
+    <div class="container text-center">
+        <h1>Welcome to Placement Portal</h1>
+        <p class="lead mb-4">Your gateway to campus recruitment success</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('register_student') }}" class="btn btn-light btn-lg">
+                <i class="bi bi-mortarboard me-2"></i>Student Registration
+            </a>
+            <a href="{{ url_for('register_company') }}" class="btn btn-outline-light btn-lg">
+                <i class="bi bi-building me-2"></i>Company Registration
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Features Section -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-mortarboard display-4 text-primary"></i>
+                    </div>
+                    <h4>For Students</h4>
+                    <p class="text-muted">
+                        Browse placement drives, apply to top companies, and track your application status all in one place.
+                    </p>
+                    <a href="{{ url_for('register_student') }}" class="btn btn-outline-primary">Register Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-building display-4 text-primary"></i>
+                    </div>
+                    <h4>For Companies</h4>
+                    <p class="text-muted">
+                        Create placement drives, review applications, and find the best talent for your organization.
+                    </p>
+                    <a href="{{ url_for('register_company') }}" class="btn btn-outline-primary">Partner With Us</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check display-4 text-primary"></i>
+                    </div>
+                    <h4>For Institute</h4>
+                    <p class="text-muted">
+                        Manage the entire placement process, approve companies, and track placement statistics.
+                    </p>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Admin Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="row g-4 mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Why Choose Us?</h2>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card stat-card">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Companies</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card stat-card">
+                <div class="stat-number">1000+</div>
+                <div class="stat-label">Students</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card stat-card success">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Placements</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Active Drives</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="card bg-primary text-white mb-5">
+        <div class="card-body text-center p-5">
+            <h2>Ready to Get Started?</h2>
+            <p class="lead mb-4">Join our placement portal and take the first step towards your dream career.</p>
+            <a href="{{ url_for('login') }}" class="btn btn-light btn-lg">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Login Now
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

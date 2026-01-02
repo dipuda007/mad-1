@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</h1>
+        <p class="text-muted">Welcome back, Administrator</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3 col-6">
+            <div class="card stat-card">
+                <div class="stat-number">{{ total_students }}</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card stat-card">
+                <div class="stat-number">{{ total_companies }}</div>
+                <div class="stat-label">Total Companies</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card stat-card">
+                <div class="stat-number">{{ total_drives }}</div>
+                <div class="stat-label">Placement Drives</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card stat-card">
+                <div class="stat-number">{{ total_applications }}</div>
+                <div class="stat-label">Applications</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Items -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-building me-2"></i>Pending Companies</span>
+                    <span class="badge bg-warning">{{ pending_companies }}</span>
+                </div>
+                <div class="card-body">
+                    {% if pending_companies > 0 %}
+                    <p>You have {{ pending_companies }} company registration(s) waiting for approval.</p>
+                    <a href="{{ url_for('admin_companies') }}?status=pending" class="btn btn-primary">
+                        Review Companies
+                    </a>
+                    {% else %}
+                    <p class="text-muted mb-0">No pending company registrations.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-megaphone me-2"></i>Pending Drives</span>
+                    <span class="badge bg-warning">{{ pending_drives }}</span>
+                </div>
+                <div class="card-body">
+                    {% if pending_drives > 0 %}
+                    <p>You have {{ pending_drives }} placement drive(s) waiting for approval.</p>
+                    <a href="{{ url_for('admin_drives') }}" class="btn btn-primary">
+                        Review Drives
+                    </a>
+                    {% else %}
+                    <p class="text-muted mb-0">No pending placement drives.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+        <div class="card-header">
+            <i class="bi bi-lightning me-2"></i>Quick Actions
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3 col-6">
+                    <a href="{{ url_for('admin_companies') }}" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-building me-2"></i>Manage Companies
+                    </a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <a href="{{ url_for('admin_students') }}" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-people me-2"></i>Manage Students
+                    </a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <a href="{{ url_for('admin_drives') }}" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-megaphone me-2"></i>View Drives
+                    </a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <a href="{{ url_for('admin_applications') }}" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-file-text me-2"></i>All Applications
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

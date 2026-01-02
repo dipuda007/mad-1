@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Application History - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-clock-history me-2"></i>Application History</h1>
+        <p class="text-muted mb-0">Track all your applications</p>
+    </div>
+
+    {% if applications %}
+    <div class="row g-4">
+        {% for application in applications %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 status-{{ application.status }}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0">{{ application.drive.job_title }}</h5>
+                        {% if application.status == 'applied' %}
+                        <span class="badge badge-applied">Applied</span>
+                        {% elif application.status == 'shortlisted' %}
+                        <span class="badge badge-shortlisted">Shortlisted</span>
+                        {% elif application.status == 'selected' %}
+                        <span class="badge badge-selected">Selected</span>
+                        {% else %}
+                        <span class="badge badge-rejected">Rejected</span>
+                        {% endif %}
+                    </div>
+
+                    <h6 class="card-subtitle mb-3 text-muted">
+                        <i class="bi bi-building me-1"></i>{{ application.drive.company.name }}
+                    </h6>
+
+                    {% if application.drive.package_lpa %}
+                    <p class="mb-2">
+                        <strong class="text-success">₹{{ application.drive.package_lpa }} LPA</strong>
+                    </p>
+                    {% endif %}
+
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-calendar me-1"></i>
+                        Applied on {{ application.applied_at.strftime('%d %b %Y, %H:%M') }}
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    {% if application.status == 'selected' %}
+                    <div class="text-success">
+                        <i class="bi bi-trophy me-1"></i>Congratulations! You've been selected!
+                    </div>
+                    {% elif application.status == 'shortlisted' %}
+                    <div class="text-info">
+                        <i class="bi bi-star me-1"></i>You've been shortlisted for the next round.
+                    </div>
+                    {% elif application.status == 'rejected' %}
+                    <div class="text-danger">
+                        <i class="bi bi-x-circle me-1"></i>Unfortunately, you were not selected.
+                    </div>
+                    {% else %}
+                    <div class="text-muted">
+                        <i class="bi bi-hourglass-split me-1"></i>Application under review.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-file-earmark-text display-1 text-muted"></i>
+            <h4 class="mt-3">No Applications Yet</h4>
+            <p class="text-muted">You haven't applied to any placement drives yet.</p>
+            <a href="{{ url_for('student_drives') }}" class="btn btn-primary">
+                <i class="bi bi-search me-2"></i>Browse Drives
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

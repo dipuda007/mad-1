@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Placement Drives - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-megaphone me-2"></i>Available Placement Drives</h1>
+        <p class="text-muted mb-0">Browse and apply to placement opportunities</p>
+    </div>
+
+    {% if drives %}
+    <div class="row g-4">
+        {% for drive in drives %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card drive-card h-100 {{ 'closed' if drive.status == 'closed' }}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0">{{ drive.job_title }}</h5>
+                        {% if drive.package_lpa %}
+                        <span class="package">₹{{ drive.package_lpa }} LPA</span>
+                        {% endif %}
+                    </div>
+                    <h6 class="card-subtitle mb-3 text-muted">
+                        <i class="bi bi-building me-1"></i>{{ drive.company.name }}
+                    </h6>
+
+                    {% if drive.job_description %}
+                    <p class="card-text small text-muted">
+                        {{ drive.job_description[:100] }}{% if drive.job_description|length > 100 %}...{% endif %}
+                    </p>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <span class="badge bg-light text-dark me-1">
+                            <i class="bi bi-graph-up me-1"></i>Min CGPA: {{ drive.min_cgpa }}
+                        </span>
+                        {% if drive.branches_allowed %}
+                        <span class="badge bg-light text-dark">
+                            <i class="bi bi-mortarboard me-1"></i>{{ drive.branches_allowed[:30] }}{% if
+                            drive.branches_allowed|length > 30 %}...{% endif %}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <p class="text-muted small mb-3">
+                        <i class="bi bi-calendar me-1"></i>
+                        {% if drive.application_deadline %}
+                        Deadline: {{ drive.application_deadline.strftime('%d %b %Y') }}
+                        {% else %}
+                        No deadline
+                        {% endif %}
+                    </p>
+
+                    {% if drive.id in applied_drive_ids %}
+                    <button class="btn btn-secondary w-100" disabled>
+                        <i class="bi bi-check-circle me-1"></i>Already Applied
+                    </button>
+                    {% elif student.cgpa < drive.min_cgpa %} <button class="btn btn-outline-danger w-100" disabled
+                        title="Your CGPA ({{ student.cgpa }}) does not meet the minimum requirement ({{ drive.min_cgpa }})">
+                        <i class="bi bi-x-circle me-1"></i>CGPA Not Met ({{ drive.min_cgpa }} required)
+                        </button>
+                        {% else %}
+                        <form method="POST" action="{{ url_for('apply_drive', id=drive.id) }}">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-send me-1"></i>Apply Now
+                            </button>
+                        </form>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <h4 class="mt-3">No Placement Drives Available</h4>
+            <p class="text-muted">There are no approved placement drives at the moment. Please check back later.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

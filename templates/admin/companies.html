@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Companies - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1><i class="bi bi-building me-2"></i>Manage Companies</h1>
+            <p class="text-muted mb-0">Review and manage company registrations</p>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('admin_companies') }}" class="d-flex gap-2">
+                <input type="text" class="form-control search-box" name="search" value="{{ search }}"
+                    placeholder="Search by company name...">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+                {% if search %}
+                <a href="{{ url_for('admin_companies') }}" class="btn btn-outline-secondary">Clear</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Companies Table -->
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Company Name</th>
+                            <th>HR Contact</th>
+                            <th>Website</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for company in companies %}
+                        <tr>
+                            <td>{{ company.id }}</td>
+                            <td>
+                                <strong>{{ company.name }}</strong>
+                                {% if company.is_blacklisted %}
+                                <span class="badge badge-blacklisted ms-2">Blacklisted</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if company.hr_name %}
+                                {{ company.hr_name }}<br>
+                                <small class="text-muted">{{ company.hr_email }}</small>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if company.website %}
+                                <a href="{{ company.website }}" target="_blank">{{ company.website }}</a>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if company.approval_status == 'pending' %}
+                                <span class="badge badge-pending">Pending</span>
+                                {% elif company.approval_status == 'approved' %}
+                                <span class="badge badge-approved">Approved</span>
+                                {% else %}
+                                <span class="badge badge-rejected">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td class="action-buttons">
+                                {% if company.approval_status == 'pending' %}
+                                <form method="POST" action="{{ url_for('approve_company', id=company.id) }}"
+                                    class="d-inline">
+                                    <button type="submit" class="btn btn-success btn-sm" title="Approve">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ url_for('reject_company', id=company.id) }}"
+                                    class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Reject">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                                <form method="POST" action="{{ url_for('blacklist_company', id=company.id) }}"
+                                    class="d-inline">
+                                    <button type="submit"
+                                        class="btn btn-{{ 'warning' if company.is_blacklisted else 'dark' }} btn-sm"
+                                        title="{{ 'Unblacklist' if company.is_blacklisted else 'Blacklist' }}">
+                                        <i class="bi bi-{{ 'unlock' if company.is_blacklisted else 'lock' }}"></i>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ url_for('delete_company', id=company.id) }}"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Are you sure you want to delete this company?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                {% if search %}
+                                No companies found matching "{{ search }}"
+                                {% else %}
+                                No companies registered yet
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

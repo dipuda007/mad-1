@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Drives - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-megaphone me-2"></i>Placement Drives</h1>
+        <p class="text-muted mb-0">Review and manage all placement drives</p>
+    </div>
+
+    <!-- Drives Table -->
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Package</th>
+                            <th>Min CGPA</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                            <th>Applications</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drive in drives %}
+                        <tr>
+                            <td>{{ drive.id }}</td>
+                            <td><strong>{{ drive.job_title }}</strong></td>
+                            <td>{{ drive.company.name }}</td>
+                            <td>
+                                {% if drive.package_lpa %}
+                                <span class="text-success fw-bold">₹{{ drive.package_lpa }} LPA</span>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ drive.min_cgpa }}</td>
+                            <td>
+                                {% if drive.application_deadline %}
+                                {{ drive.application_deadline.strftime('%d %b %Y') }}
+                                {% else %}
+                                <span class="text-muted">No deadline</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if drive.status == 'pending' %}
+                                <span class="badge badge-pending">Pending</span>
+                                {% elif drive.status == 'approved' %}
+                                <span class="badge badge-approved">Approved</span>
+                                {% elif drive.status == 'rejected' %}
+                                <span class="badge badge-rejected">Rejected</span>
+                                {% else %}
+                                <span class="badge badge-closed">Closed</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ drive.applications.count() }}</span>
+                            </td>
+                            <td class="action-buttons">
+                                {% if drive.status == 'pending' %}
+                                <form method="POST" action="{{ url_for('approve_drive', id=drive.id) }}"
+                                    class="d-inline">
+                                    <button type="submit" class="btn btn-success btn-sm" title="Approve">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ url_for('reject_drive', id=drive.id) }}"
+                                    class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Reject">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="9" class="text-center py-4 text-muted">
+                                No placement drives created yet
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

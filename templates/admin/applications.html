@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}All Applications - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-file-earmark-text me-2"></i>All Applications</h1>
+        <p class="text-muted mb-0">View all student applications</p>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student</th>
+                            <th>Roll Number</th>
+                            <th>Drive</th>
+                            <th>Company</th>
+                            <th>Applied On</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for application in applications %}
+                        <tr>
+                            <td>{{ application.id }}</td>
+                            <td><strong>{{ application.student.name }}</strong></td>
+                            <td>{{ application.student.roll_number }}</td>
+                            <td>{{ application.drive.job_title }}</td>
+                            <td>{{ application.drive.company.name }}</td>
+                            <td>{{ application.applied_at.strftime('%d %b %Y, %H:%M') }}</td>
+                            <td>
+                                {% if application.status == 'applied' %}
+                                <span class="badge badge-applied">Applied</span>
+                                {% elif application.status == 'shortlisted' %}
+                                <span class="badge badge-shortlisted">Shortlisted</span>
+                                {% elif application.status == 'selected' %}
+                                <span class="badge badge-selected">Selected</span>
+                                {% else %}
+                                <span class="badge badge-rejected">Rejected</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                No applications yet
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

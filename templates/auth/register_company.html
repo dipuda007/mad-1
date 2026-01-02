@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Company Registration - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="auth-container" style="max-width: 600px;">
+        <div class="auth-card">
+            <h2><i class="bi bi-building me-2"></i>Company Registration</h2>
+
+            <div class="alert alert-info mb-4">
+                <i class="bi bi-info-circle me-2"></i>
+                Your registration will be reviewed by the admin. You can login after approval.
+            </div>
+
+            <form method="POST" action="{{ url_for('register_company') }}">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Company Name *</label>
+                    <input type="text" class="form-control" id="name" name="name" required
+                        placeholder="Enter company name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Login Email *</label>
+                    <input type="email" class="form-control" id="email" name="email" required
+                        placeholder="Enter login email">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label">Password *</label>
+                        <input type="password" class="form-control" id="password" name="password" required
+                            placeholder="Create a password" minlength="6">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="confirm_password" class="form-label">Confirm Password *</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                            required placeholder="Confirm password">
+                    </div>
+                </div>
+
+                <h5 class="mt-4 mb-3">HR Contact Details</h5>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="hr_name" class="form-label">HR Name</label>
+                        <input type="text" class="form-control" id="hr_name" name="hr_name"
+                            placeholder="HR contact name">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="hr_email" class="form-label">HR Email</label>
+                        <input type="email" class="form-control" id="hr_email" name="hr_email"
+                            placeholder="HR email address">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="hr_phone" class="form-label">HR Phone</label>
+                        <input type="tel" class="form-control" id="hr_phone" name="hr_phone"
+                            placeholder="HR phone number">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="website" class="form-label">Website</label>
+                        <input type="url" class="form-control" id="website" name="website"
+                            placeholder="https://company.com">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="form-label">Company Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"
+                        placeholder="Brief description about your company"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3">
+                    <i class="bi bi-building-add me-2"></i>Register Company
+                </button>
+            </form>
+
+            <hr>
+
+            <div class="text-center">
+                <p class="mb-0">Already registered? <a href="{{ url_for('login') }}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

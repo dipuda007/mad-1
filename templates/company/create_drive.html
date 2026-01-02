@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Placement Drive - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="bi bi-plus-circle me-2"></i>Create Placement Drive</h1>
+        <p class="text-muted mb-0">Post a new job opportunity</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('create_drive') }}">
+                        <div class="mb-3">
+                            <label for="job_title" class="form-label">Job Title *</label>
+                            <input type="text" class="form-control" id="job_title" name="job_title" required
+                                placeholder="e.g., Software Developer, Data Analyst">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="job_description" class="form-label">Job Description</label>
+                            <textarea class="form-control" id="job_description" name="job_description" rows="4"
+                                placeholder="Describe the role, responsibilities, and requirements"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="eligibility_criteria" class="form-label">Eligibility Criteria</label>
+                            <textarea class="form-control" id="eligibility_criteria" name="eligibility_criteria"
+                                rows="3" placeholder="List any specific requirements or qualifications"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="min_cgpa" class="form-label">Minimum CGPA</label>
+                                <input type="number" class="form-control" id="min_cgpa" name="min_cgpa" step="0.1"
+                                    min="0" max="10" placeholder="e.g., 7.0">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="package_lpa" class="form-label">Package (LPA)</label>
+                                <input type="number" class="form-control" id="package_lpa" name="package_lpa" step="0.1"
+                                    min="0" placeholder="e.g., 12.5">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="application_deadline" class="form-label">Application Deadline</label>
+                                <input type="date" class="form-control" id="application_deadline"
+                                    name="application_deadline">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="branches_allowed" class="form-label">Eligible Branches</label>
+                            <input type="text" class="form-control" id="branches_allowed" name="branches_allowed"
+                                placeholder="e.g., Computer Science, IT, Data Science (comma separated)">
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Your placement drive will be reviewed by the admin before it becomes visible to students.
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-2"></i>Create Drive
+                            </button>
+                            <a href="{{ url_for('company_drives') }}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

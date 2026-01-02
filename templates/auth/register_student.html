@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Registration - Placement Portal{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="auth-container" style="max-width: 550px;">
+        <div class="auth-card">
+            <h2><i class="bi bi-mortarboard me-2"></i>Student Registration</h2>
+
+            <form method="POST" action="{{ url_for('register_student') }}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Full Name *</label>
+                        <input type="text" class="form-control" id="name" name="name" required
+                            placeholder="Enter your full name">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="roll_number" class="form-label">Roll Number *</label>
+                        <input type="text" class="form-control" id="roll_number" name="roll_number" required
+                            placeholder="e.g., 21BCE1234">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" class="form-control" id="email" name="email" required
+                        placeholder="Enter your email">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label">Password *</label>
+                        <input type="password" class="form-control" id="password" name="password" required
+                            placeholder="Create a password" minlength="6">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="confirm_password" class="form-label">Confirm Password *</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                            required placeholder="Confirm password">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="e.g., 9876543210">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="branch" class="form-label">Branch</label>
+                        <select class="form-select" id="branch" name="branch">
+                            <option value="">Select Branch</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Civil">Civil</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="AI/ML">AI/ML</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="cgpa" class="form-label">CGPA</label>
+                    <input type="number" class="form-control" id="cgpa" name="cgpa" step="0.01" min="0" max="10"
+                        placeholder="e.g., 8.5">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3">
+                    <i class="bi bi-person-plus me-2"></i>Register
+                </button>
+            </form>
+
+            <hr>
+
+            <div class="text-center">
+                <p class="mb-0">Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
